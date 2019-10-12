@@ -1,0 +1,903 @@
+C语言文件操作解说
+C语言文件操作函数
+函数介绍
+文件打开与关闭操作
+fopen():文件打开操作
+头文件：stdio.h
+函数定义：FILE *fopen(char *pname, char *mode)
+函数说明：pname是文件名，mode是打开文件的方式
+mode："r"
+打开一个已经存在的文件文本，文件不存在则出错
+
+
+
+
+以“r+”的方式打开一个文件，会清空文件的原始内容，重新写入数据
+返回值：正常返回：FILE *一个指向文件在内存中的文件信息去的开头
+异常返回：NULL，表示打开操作不成功
+打开文件的作用是：
+（1）分配给打开文件一个FILE 类型的文件结构体变量，并将有关信息填入文件结构体变量；
+（2）开辟一个缓冲区；
+（3）调用操作系统提供的打开文件或建立新文件功能，打开或建立指定文件；
+FILE *：指出fopen是一个返回文件类型的指针函数；
+　返回值
+　　　正常返回：被打开文件的文件指针。
+　　　异常返回：NULL，表示打开操作不成功。
+　要说明的是：C语言将计算机的输入输出设备都看作是文件。例如，键盘文件、屏幕文件等。ANSI C标准规定，在执行程序时系统先自动打开键盘、屏幕、错误三个文件。这三个文件的文件指针分别是：标准输入stdin、标准输出stdout和标准出错 stderr。
+ fclose():文件关闭
+函数定义：int fclose(FILE *fp);
+函数说明：fp是一个以打开的文件的文件指针
+返回值：
+正常返回：0
+异常返回：EOF，表示文件在关闭时发生错误
+
+
+fgetc:读取一个字符
+函数定义：int fgetc(FILE *fp)
+函数说明：从fp中读取一个字符，作为返回值返回
+返回值：
+正常返回：返回读取字符的代码
+异常返回：返回EOF。例如：要从“写打开”的文件中读取一个字符时，会发生错误而返回一个EOF
+【例8.1】显示指定文件的内容。
+[cpp] view plain copy
+1.//程序名为：display.c  
+2.//执行时可用：display filename1 形式的命令行运行。显示文件filename1中的内容。例如，执行命令行display display.c将在屏幕上显示display的原代码。  
+3.  
+4.//File display program.  
+5.#include <stdio.h>  
+6.void main(int argc,char *argv[]) //命令行参数  
+7.{  
+8.    int ch;//定义文件类型指针  
+9.    FILE *fp;//判断命令行是否正确  
+10.    if(argc!=2)  
+11.    {  
+12.        printf("Error format,Usage: display filename1\n");  
+13.        return; //键入了错误的命令行，结束程序的执行  
+14.    }  
+15.    //按读方式打开由argv[1]指出的文件  
+16.    if((fp=fopen(argv[1],"r"))==NULL)  
+17.    {  
+18.        printf("The file <%s> can not be opened.\n",argv[1]);//打开操作不成功  
+19.        return;//结束程序的执行  
+20.    }  
+21.    //成功打开了argv[1]所指文件  
+22.    ch=fgetc(fp); //从fp所指文件的当前指针位置读取一个字符  
+23.    while(ch!=EOF) //判断刚读取的字符是否是文件结束符  
+24.    {  
+25.        putchar(ch); //若不是结束符，将它输出到屏幕上显示  
+26.        ch=fgetc(fp); //继续从fp所指文件中读取下一个字符  
+27.    } //完成将fp所指文件的内容输出到屏幕上显示  
+28.    fclose(fp); //关闭fp所指文件  
+29.}  
+
+
+
+
+fputc:写一个字符到文件中
+函数定义：int fputc(int ch, FILE*fp)
+函数说明：ch是一个整型变量，要写到文件的字符
+fp:文件指针，要写入的文件
+返回值：
+正常返回：要写入的字符的代码
+异常返回：返回EOF
+【例8.2】将一个文件的内容复制到另一个文件中去。
+[cpp] view plain copy
+1.//程序名为：copyfile.c  
+2.//执行时可用：copyfile filename1 filename2形式的命令行运行，将文件filename1中的内容复制到文件filename2中去。  
+3.//file copy program.  
+4.#include <stdio.h>  
+5.void main(int argc,char *argv[]) //命令行参数  
+6.{  
+7.    int ch;  
+8.    FILE *in,*out; //定义in和out两个文件类型指针  
+9.    if(argc!=3) //判断命令行是否正确  
+10.    {  
+11.        printf("Error in format,Usage: copyfile filename1 filename2\n");  
+12.        return; //命令行错，结束程序的执行  
+13.    }  
+14.    //按读方式打开由argv[1]指出的文件  
+15.    if((in=fopen(argv[1],"r"))==NULL)  
+16.    {  
+17.        printf("The file <%s> can not be opened.\n",argv[1]);  
+18.        return; //打开失败，结束程序的执行  
+19.    }  
+20.    //成功打开了argv[1]所指文件，再  
+21.    //按写方式打开由argv[2]指出的文件  
+22.    if((out=fopen(argv[2],"w"))==NULL)  
+23.    {  
+24.        printf("The file %s can not be opened.\n",argv[2]);  
+25.        return; //打开失败，结束程序的执行  
+26.    }  
+27.    //成功打开了argv[2]所指文件  
+28.    ch=fgetc(in); //从in所指文件的当前指针位置读取一个字符  
+29.    while(ch!=EOF) //判断刚读取的字符是否是文件结束符  
+30.    {  
+31.        fputc(ch,out); //若不是结束符，将它写入out所指文件  
+32.        ch=fgetc(in); //继续从in所指文件中读取下一个字符  
+33.    } //完成将in所指文件的内容写入（复制）到out所指文件中  
+34.    fclose(in); //关闭in所指文件  
+35.    fclose(out); //关闭out所指文件  
+36.}  
+
+
+【例8.3】按十进制和字符显示文件代码，若遇不可示字符就用井号"#"字符代替之。
+[cpp] view plain copy
+1.//程序名为：dumpf.c  
+2.//执行时可用：dumpf filename1 形式的命令行运行。  
+3.// File dump program.  
+4.#include <stdio.h>  
+5.void main(int argc,char *argv[])  
+6.{  
+7.    char str[9];  
+8.    int ch,count,i;  
+9.    FILE *fp;  
+10.    if(argc!=2)  
+11.    {  
+12.        printf("Error format,Usage: dumpf filename\n");  
+13.        return;  
+14.    }  
+15.    if((fp=fopen(argv[1],"r"))==NULL)  
+16.    {  
+17.        printf("The file %s can not be opened.\n",argv[1]);  
+18.        return;  
+19.    }  
+20.    count=0;  
+21.    do{  
+22.        i=0;  
+23.        //按八进制输出第一列，作为一行八个字节的首地址  
+24.        printf("%06o: ",count*8);  
+25.        do{  
+26.            // 从打开的文件中读取一个字符  
+27.            ch=fgetc(fp);  
+28.            // 按十进制方式输出这个字符的ASCII码  
+29.            printf("%4d",ch);  
+30.            // 如果是不可示字符就用"#"字符代替  
+31.            if(ch<' '||ch>'~') str[i]='#';  
+32.            // 如果是可示字符，就将它存入数组str以便形成字符串  
+33.            else str[i]=ch;  
+34.            // 保证每一行输出八个字符  
+35.            if(++i==8) break;  
+36.        }while(ch!=EOF); // 遇到文件尾标志，结束读文件操作  
+37.        str[i]='\0'; // 在数组str加字符串结束标志  
+38.        for(;i<8;i++) printf(" "); // 一行不足八个字符用空格填充  
+39.        printf(" %s\n",str); // 输出字符串  
+40.        count++; // 准备输出下一行  
+41.    }while(ch!=EOF); // 直到文件结束  
+42.    fclose(fp); // 关闭fp所指文件  
+43.}  
+
+
+fgets():从文件中读取一个字符串
+函数定义：char *fgets(char *str, int n, FILE *fp)
+函数说明：由fp指出的文件中读取n-1个字符，并把他们存放到有str指出的字符数组中区，最后加上一个由字符串结束符'\0'
+参数说明：str：接受字符串的内存地址，可以是数组别名，也可以是指针
+n:指出要读取的字符的个数
+fp：这个是文件指针，指出要从中读取字符的文件
+返回值：
+正常返回：字符串的内存首地址，即str的值
+异常返回：返回一个NULL值，此时应当用feof()或ferror()函数来判别是读取到了文件尾，还是发生了错误。
+fputs():写入字符串到文件中去
+函数定义：把由str之处的字符串写入到fp所指的文件中去
+函数说明：
+str:之处要写入到文件中去的字符串，不包括最后的'\0'
+fp：这个是文件指针，之处字符串要写入到的文件指针
+返回值：
+正常返回：写入到的文件的字符个数，即字符串的长度
+非正常返回：返回一个NULL值，此时应当用feof()或ferror()函数来判别是读取到了文件尾，还是发生了错误。
+5．实例
+【例8.4】以下程序将一个文件的内容附加到另一个文件中去。
+[cpp] view plain copy
+1.//程序名：linkfile.c  
+2.//执行时可用：linkfile filename1 filename2形式的命令行运行，将文件filename2的内容附加在文件filename1之后。  
+3.// file linked program.  
+4.#include <stdio.h>  
+5.#define SIZE 512  
+6.void main(int argc,char *argv[])  
+7.{  
+8.    char buffer[SIZE];  
+9.    FILE *fp1,*fp2;  
+10.    if(argc!=3)  
+11.    {  
+12.        printf("Usage: linkfile filename1 filename2\n");  
+13.        return;  
+14.    }  
+15.    // 按追加方式打开argv[1] 所指文件  
+16.    if((fp1=fopen(argv[1],"a"))==NULL)  
+17.    {  
+18.        printf("The file %s can not be opened.\n",argv[1]);  
+19.        return;  
+20.    }  
+21.    if((fp2=fopen(argv[2],"r"))==NULL)  
+22.    {  
+23.        printf("The file %s can not be opened.\n",argv[2]);  
+24.        return;  
+25.    }  
+26.    // 读入一行立即写出，直到文件结束  
+27.    while(fgets(buffer,SIZE,fp1)!=NULL)  
+28.        printf("%s\n",buffer);  
+29.    while(fgets(buffer,SIZE,fp2)!=NULL)  
+30.        fputs(buffer,fp1);  
+31.    fclose(fp1);  
+32.    fclose(fp2);  
+33.    if((fp1=fopen(argv[1],"r"))==NULL)  
+34.    {  
+35.        printf("The file %s can not be opened.\n",argv[1]);  
+36.        return;  
+37.    }  
+38.    while(fgets(buffer,SIZE,fp1)!=NULL)  
+39.        printf("%s\n",buffer);  
+40.    fclose(fp1);  
+41.}  
+
+
+E. 往文件中写格式化数据
+1．函数原型
+int fprintf(FILE *fp,char *format,arg_list)
+2．功能说明
+　　将变量表列（arg_list）中的数据，按照format指出的格式，写入由fp指定的文件。fprintf()函数与printf()函数的功能相同，只是printf()函数是将数据写入屏幕文件（stdout）。
+3．参数说明
+　　fp：这是个文件指针，指出要将数据写入的文件。
+　　format：这是个指向字符串的字符指针，字符串中含有要写出数据的格式，所以该字符串成为格式串。格式串描述的规则与printf()函数中的格式串相同。
+arg_list：是要写入文件的变量表列，各变量之间用逗号分隔。
+4．返回值
+　　无。
+5． 实例
+【8.5】下列程序的执行文件为display.exe，执行时键入命令行：
+　　　display [-i][-s] filename
+下面的表格列出了命令行参数的含义及其功能：
+[cpp] view plain copy
+1.//存储文件名：save.txt  
+2.//程序代码如下：  
+3.// file display program.  
+4.#include <stdio.h>  
+5.void main()  
+6.{  
+7.    char name[10];  
+8.    int nAge,nClass;  
+9.    long number;  
+10.    FILE *fp;  
+11.    if((fp=fopen("student.txt","w"))==NULL)  
+12.    {  
+13.        printf("The file %s can not be opened.\n","student.txt");  
+14.        return;  
+15.    }  
+16.    fscanf(stdin,"%s %d %d %ld",name,&nClass,&nAge,&number);  
+17.    fprintf(fp,"%s %5d %4d %8ld",name,nClass,nAge,number);  
+18.    fclose(fp);  
+19.    if((fp=fopen("student.txt","r"))==NULL)  
+20.    {  
+21.        printf("The file %s can not be opened.\n","student.txt");  
+22.        return;  
+23.    }  
+24.    fscanf(fp,"%s %d %d %ld",name,&nClass,&nAge,&number);  
+25.    printf("name nClass nAge number\n");  
+26.    fprintf(stdout,"%-10s%-8d%-6d%-8ld\n",name,nClass,nAge,number);  
+27.    fclose(fp);  
+28.}  
+
+
+G. 以二进制形式读取文件中的数据
+1． 函数原型
+int fread(void *buffer,unsigned sife,unsigned count,FILE *fp)
+2． 功能说明
+　　从由fp指定的文件中，按二进制形式将sife*count个数据读到由buffer指出的数据区中。
+3． 参数说明
+buffer：这是一个void型指针，指出要将读入数据存放在其中的存储区首地址。
+sife：指出一个数据块的字节数，即一个数据块的大小尺寸。
+count：指出一次读入多少个数据块（sife）。
+fp：这是个文件指针，指出要从其中读出数据的文件。
+4．返回值
+　　正常返回：实际读取数据块的个数，即count。
+　　异常返回：如果文件中剩下的数据块个数少于参数中count指出的个数，或者发生了错误，返回0值。此时可以用feof()和ferror()来判定到底出现了什么
+情况。
+H. 以二进制形式写数据到文件中去
+1． 函数原型
+int fwrite(void *buffer,unsigned sife,unsigned count,FILE *fp)
+2． 功能说明
+　　按二进制形式，将由buffer指定的数据缓冲区内的sife*count个数据写入由fp指定的文件中去。
+3． 参数说明
+buffer：这是一个void型指针，指出要将其中数据输出到文件的缓冲区首地址。
+sife：指出一个数据块的字节数，即一个数据块的大小尺寸。
+count：一次输出多少个数据块（sife）。
+fp：这是个文件指针，指出要从其中读出数据的文件。
+4．返回值
+　　正常返回：实际输出数据块的个数，即count。
+　　异常返回：返回0值，表示输出结束或发生了错误。
+5．实例
+【例8.7】
+[cpp] view plain copy
+1.#include <stdio.h>  
+2.#define SIZE 4  
+3.struct worker  
+4.{ int number;  
+5.    char name[20];  
+6.    int age;  
+7.};  
+8.void main()  
+9.{  
+10.    struct worker wk;  
+11.    int n;  
+12.    FILE *in,*out;  
+13.    if((in=fopen("file1.txt","rb"))==NULL)  
+14.    {  
+15.        printf("The file %s can not be opened.\n","file1.txt");  
+16.        return;  
+17.    }  
+18.    if((out=fopen("file2.txt","wb"))==NULL)  
+19.    {  
+20.        printf("The file %s can not be opened.\n","file2.txt");  
+21.        return;  
+22.    }  
+23.    while(fread(&wk,sizeof(struct worker),1,in)==1)  
+24.        fwrite(&wk,sizeof(struct worker),1,out);  
+25.    fclose(in);  
+26.    fclose(out);  
+27.}  
+
+
+I. 以二进制形式读取一个整数
+1． 函数原型
+int getw(FILE *fp)
+2． 功能说明
+　　从由fp指定的文件中，以二进制形式读取一个整数。
+3． 参数说明
+　　fp：是文件指针。
+4． 返回值
+　　正常返回：所读取整数的值。
+　　异常返回：返回EOF，即-1。由于读取的整数值有可能是-1，所以必须用feof()或ferror()来判断是到了文件结束，还是出现了一个出错。
+5． 实例
+【例8.8】
+[cpp] view plain copy
+1.#include <stdio.h>  
+2.void main(int argc,char *argv[])  
+3.{  
+4.    int i,sum=0;  
+5.    FILE *fp;  
+6.    if(argc!=2)  
+7.    {  
+8.        printf("Command error,Usage: readfile filename\n");  
+9.        exit(1);  
+10.    }  
+11.    if(!(fp=fopen(argv[1],"rb")))  
+12.    {  
+13.        printf("The file %s can not be opened.\n",argv[1]);  
+14.        exit(1);  
+15.    }  
+16.    for(i=1;i<=10;i++) sum+=getw(fp);  
+17.    printf("The sum is %d\n",sum);  
+18.    fclose(fp);  
+19.}  
+
+
+J. 以二进制形式存贮一个整数
+1．函数原型
+int putw(int n,FILE *fp)
+2． 功能说明
+　以二进制形式把由变量n指出的整数值存放到由fp指定的文件中。
+3． 参数说明
+　n：要存入文件的整数。
+　fp：是文件指针。
+4． 返回值
+　正常返回：所输出的整数值。
+　异常返回：返回EOF，即-1。由于输出的整数值有可能是-1，所以必须用feof()或ferror()来判断是到了文件结束，还是出现了一个出错。
+5． 实例
+【例8.9】
+[cpp] view plain copy
+1.#include <stdio.h>  
+2.void main(int argc,char *argv[])  
+3.{  
+4.    int i;  
+5.    FILE *fp;  
+6.    if(argc!=2)  
+7.    {  
+8.        printf("Command error,Usage: writefile filename\n");  
+9.        return;  
+10.    }  
+11.  
+12.    if(!(fp=fopen(argv[1],"wb")))  
+13.    {  
+14.        printf("The file %s can not be opened.\n",argv[1]);  
+15.        return;  
+16.    }  
+17.    for(i=1;i<=10;i++) printf("%d\n", putw(i,fp));  
+18.    fclose(fp);  
+19.}  
+
+
+* 文件状态检查
+A. 文件结束
+（1） 函数原型
+int feof(FILE *fp)
+（2） 功能说明
+　　　该函数用来判断文件是否结束。
+（3） 参数说明
+　　　fp：文件指针。
+（4） 返回值
+　　　0：假值，表示文件未结束。
+　　　1：真值，表示文件结束。
+（5） 实例
+【例8.10】
+[cpp] view plain copy
+1.#include <stdio.h>  
+2.void main(int argc,char *argv[])  
+3.{  
+4.    FILE *in,*out;  
+5.    char ch;  
+6.    if(argc!=3)  
+7.    {  
+8.        printf("Usage: copyfile filename1 filename2\n");  
+9.        return;  
+10.    }  
+11.    if((in=fopen(argv[1],"rb"))==NULL)  
+12.    {  
+13.        printf("The file %s can not be opened.\n",argv[1]);  
+14.        return;  
+15.    }  
+16.    if((out=fopen(argv[2],"wb"))==NULL)  
+17.    {  
+18.        printf("The file %s can not be opened.\n",argv[2]);  
+19.        return;  
+20.    }  
+21.    while(!feof(in))  
+22.    {  
+23.        ch=fgetc(in);  
+24.        if(ferror(in))  
+25.        {  
+26.            printf("read error!\n");  
+27.            clearerr(in);  
+28.        }  
+29.        else  
+30.        {  
+31.            fputc(ch,out);  
+32.            if(ferror(out))  
+33.            {  
+34.                printf("write error!\n");  
+35.                clearerr(out);  
+36.            }  
+37.        }  
+38.    }  
+39.    fclose(in);  
+40.    fclose(out);  
+41.}  
+
+
+B. 文件读/写出错
+（1） 函数原型
+int ferror(FILE *fp)
+（2） 功能说明
+　　　检查由fp指定的文件在读写时是否出错。
+（3） 参数说明
+　　　fp：文件指针。
+（4） 返回值
+　　　0：假值，表示无错误。
+　　　1：真值，表示出错。
+C. 清除文件错误标志
+（1） 函数原型
+void clearerr(FILE *fp)
+（2） 功能说明
+　　　清除由fp指定文件的错误标志。
+（3） 参数说明
+　　　fp：文件指针。
+（4） 返回值
+　　　无。
+（5） 实例
+【例8.12】
+[cpp] view plain copy
+1.#include <stdio.h>  
+2.void main(int argc,char *argv[])  
+3.{  
+4.    FILE *in,*out;  
+5.    char ch;  
+6.    if(argc!=3)  
+7.    {  
+8.        printf("Usage: copyfile filename1 filename2\n");  
+9.        return;  
+10.    }  
+11.    if((in=fopen(argv[1],"rb"))==NULL)  
+12.    {  
+13.        printf("The file %s can not be opened.\n",argv[1]);  
+14.        return;  
+15.    }  
+16.    if((out=fopen(argv[2],"wb"))==NULL)  
+17.    {  
+18.        printf("The file %s can not be opened.\n",argv[2]);  
+19.        return;  
+20.    }  
+21.    while(!feof(in))  
+22.    {  
+23.        ch=fgetc(in);  
+24.        if(ferror(in))  
+25.        {  
+26.            printf("read error!\n");  
+27.            clearerr(in);  
+28.        }  
+29.        else  
+30.        {  
+31.            fputc(ch,out);  
+32.            if(ferror(out))  
+33.            {  
+34.                printf("write error!\n");  
+35.                clearerr(out);  
+36.            }  
+37.        }  
+38.    }  
+39.    fclose(in);  
+40.    fclose(out);  
+41.}  
+
+
+D. 了解文件指针的当前位置
+（1） 函数原型
+long ftell(FILE *fp)
+（2） 功能说明
+　　　取得由fp指定文件的当前读/写位置，该位置值用相对于文件开头的位移量来表示。
+（3） 参数说明
+　　　fp：文件指针。
+（4） 返回值
+　　　正常返回：位移量（这是个长整数）。
+　　　异常返回：-1，表示出错。
+（5） 实例
+* 文件定位
+A. 反绕
+（1） 函数原型
+void rewind(FILE *fp)
+（2） 功能说明
+　　　使由文件指针fp指定的文件的位置指针重新指向文件的开头位置。
+（3） 参数说明
+　　　fp：文件指针。
+（4） 返回值
+　　　无。
+（5） 实例
+【例8.14】
+[cpp] view plain copy
+1.#include <stdio.h>  
+2.void main()  
+3.{  
+4.    FILE *in,*out;  
+5.    in=fopen("filename1","r");  
+6.    out=fopen("filename2","w");  
+7.    while(!feof(in)) fputc(fgetc(in),out);  
+8.    rewind(out);  
+9.    while(!feof(in)) putchar(fgetc(in));  
+10.    fclose(in);  
+11.    fclose(out);  
+12.}  
+B. 随机定位
+（1） 函数原型
+int fseek(FILE *fp,long offset,int base)
+（2） 功能说明
+　　　使文件指针fp移到基于base的相对位置offset处。
+（3）参数说明
+　　　fp：文件指针。
+　　　offset：相对base的字节位移量。这是个长整数，用以支持大于64KB的文件。
+　　　base：文件位置指针移动的基准位置，是计算文件位置指针位移的基点。ANSI C定义了base的可能取值，以及这些取值的符号常量。
+（4）返回值
+　　正常返回：当前指针位置。
+　　异常返回：-1，表示定位操作出错。
+（5）实例
+【例8.15】
+[cpp] view plain copy
+1.#include <stdio.h>  
+2.#include <string.h>  
+3.struct std_type  
+4.{  
+5.    int num;  
+6.    char name[20];  
+7.    int age;  
+8.    char class;  
+9.}stud;  
+10.int cstufile()  
+11.{  
+12.    int i;  
+13.    FILE *fp;  
+14.    if((fp=fopen("stufile","wb"))==NULL)  
+15.    {  
+16.        printf("The file can't be opened for write.\n");  
+17.        return 0;  
+18.    }  
+19.    for(i=1;i<=100;i++)  
+20.    {  
+21.        stud.num=i;  
+22.        strcpy(stud.name,"aaaa");  
+23.        stud.age=17;  
+24.        stud.class='8';  
+25.        fwrite(&stud,sizeof(struct std_type),1,fp);  
+26.    }  
+27.    fclose(fp);  
+28.    return 1;  
+29.}  
+30.void main()  
+31.{  
+32.    int n;  
+33.    FILE *fp;  
+34.    if(cstufile()==0) return;  
+35.    if((fp=fopen("stufile","rb"))==NULL)  
+36.    {  
+37.        printf("The file can not be opened.\n");  
+38.        return;  
+39.    }  
+40.    for(n=0;n<100;n+=2)  
+41.    {  
+42.        fseek(fp,n*sizeof(struct std_type),SEEK_SET);  
+43.        fread(&stud,sizeof(struct std_type),1,fp);  
+44.        printf("%10d%20s%10d%4c\n",stud.num,stud.name,stud.age,stud.class);  
+45.    }  
+46.    fclose(fp);  
+47.}  
+
+
+* 关于exit()函数
+1． 函数原型
+void exit(int status)
+2． 功能说明
+　　exit()函数使程序立即终止执行，同时将缓冲区中剩余的数据输出并关闭所有已经打开的文件。
+3． 参数说明
+　　status：为0值表示程序正常终止，为非0值表示一个定义错误。
+4． 返回值
+　　无。
+* 关于feof()函数
+1． 函数原型
+int feof(FILE *fp)
+2． 功能说明
+　 　在文本文件（ASCII文件）中可以用值为-1的符号常量EOF来作为文件的结束符。但是在二进制文件中-1往往可能是一个有意义的数据，因此不能用它 来作为文件的结束标志。为了能有效判别文件是否结束，ANSI C提供了标准函数feof()，用来识别文件是否结束。
+3． 参数说明
+　　fp：文件指针。
+4． 返回值
+　　返回为非0值：已到文件尾。
+　　返回为0值：表示还未到文件尾。 
+
+
+
+
+
+C语言 fread()与fwrite()函数说明与示例
+1.作用
+　　读写文件数据块。
+2.函数原型
+　　(1)size_t fread ( void * ptr, size_t size, size_t count, FILE * stream );
+　　　　　其中，ptr：指向保存结果的指针；size：每个数据类型的大小；count：数据的个数；stream：文件指针
+　　　　　函数返回读取数据的个数。
+　　(2)size_t fwrite ( const void * ptr, size_t size, size_t count, FILE * stream );
+　　　　   其中，ptr：指向保存数据的指针；size：每个数据类型的大小；count：数据的个数；stream：文件指针
+　　　　　函数返回写入数据的个数。
+3.注意
+　　(1)写操作fwrite()后必须关闭流fclose()。
+　　(2)不关闭流的情况下，每次读或写数据后，文件指针都会指向下一个待写或者读数据位置的指针。
+4.读写常用类型
+　　(1)写int数据到文件
+
+
+ 1 #include <stdio.h>
+ 2 #include <stdlib.h>
+ 3 int main ()
+ 4 {
+ 5   FILE * pFile;
+ 6   int buffer[] = {1, 2, 3, 4};
+ 7   if((pFile = fopen ("myfile.txt", "wb"))==NULL)
+ 8   {
+ 9       printf("cant open the file");
+10       exit(0);
+11   }
+12   //可以写多个连续的数据(这里一次写4个)
+13   fwrite (buffer , sizeof(int), 4, pFile);
+14   fclose (pFile);
+15   return 0;
+16 }
+
+　　(2)读取int数据
+
+
+ 1 #include <stdio.h>
+ 2 #include <stdlib.h>
+ 3 
+ 4 int main () {
+ 5     FILE * fp;
+ 6     int buffer[4];
+ 7     if((fp=fopen("myfile.txt","rb"))==NULL)
+ 8     {
+ 9       printf("cant open the file");
+10       exit(0);
+11     }
+12     if(fread(buffer,sizeof(int),4,fp)!=4)   //可以一次读取
+13     {//将fp指向的文件的内容复制在buffer的数组中来
+14         printf("file read error\n");
+15         exit(0);
+16     }
+17 
+18     for(int i=0;i<4;i++)
+19         printf("%d\n",buffer[i]);
+20     return 0;
+21 }
+
+ 执行结果：
+
+5.读写结构体数据
+　　(1)写结构体数据到文件
+
+
+ 1 #include <stdio.h>
+ 2 #include <string.h>
+ 3 #include <stdlib.h>
+ 4 typedef struct{
+ 5     int age;
+ 6     char name[30];
+ 7 }people;
+ 8 
+ 9 int main ()
+10 {
+11     FILE * pFile;
+12     int i;
+13     people per[3];
+14     per[0].age=20;strcpy(per[0].name,"li");
+15     per[1].age=18;strcpy(per[1].name,"wang");
+16     per[2].age=21;strcpy(per[2].name,"zhang");
+17 
+18     if((pFile = fopen ("myfile.txt", "wb"))==NULL)
+19     {
+20         printf("cant open the file");
+21         exit(0);
+22     }
+23 
+24     for(i=0;i<3;i++)
+25     {
+26         if(fwrite(&per[i],sizeof(people),1,pFile)!=1)将结构体数组里的内容写入到文件里去
+//
+27             printf("file write error\n");
+28     }
+29     fclose (pFile);
+30     return 0;
+31 }
+
+　　(2)读结构体数据
+
+
+ 1 #include <stdio.h>
+ 2 #include <string.h>
+ 3 #include <stdlib.h>
+ 4 typedef struct{
+ 5     int age;
+ 6     char name[30];
+ 7 }people;
+ 8 
+ 9 int main () {
+10     FILE * fp;
+11     people per;
+12     if((fp=fopen("myfile.txt","rb"))==NULL)
+13     {
+14       printf("cant open the file");
+15       exit(0);
+16     }
+17 
+18     while(fread(&per,sizeof(people),1,fp)==1)   //如果读到数据，就显示；否则退出
+19     {
+20         printf("%d %s\n",per.age,per.name);
+21     }
+22     return 0;
+23 }
+
+执行结果：
+
+ 
+
+
+该函数包含在stdio.h头文件中，主要功能是检测流上的错误。  函数原型：int ferror(FILE *fp);  函数功能：检查文件在使用各种输入输出函数进行读写时是否出错。当输入输出函数对文件进行读写时出错，文件就会产生错误标志。应用这个函数，就可以检查出fp所指向的文件操作是否出错，也就是说是否有错误标志。  函数返回值： 未出错返回值为0，否则返回非0，表示有错。
+
+#include <stdio.h>  
+ #include <stdlib.h>   
+ int main(void)
+{      FILE *fp;      
+           if((fp=fopen("test", "rb"))==NULL)
+ {        
+ printf("Cannot open file.\n");  
+                     exit(1);      
+ }    
+      putc('C', fp);     
+     if(ferror(fp))
+          {         
+printf("File Error\n");     
+              exit(1);  
+    	 }     
+   fclose(fp);   
+   return 0;  
+ }
+
+
+C语言fseek函数了解 原创 2012年12月13日 15:29:47 标签：c /C /fseek /文件 8051 fseek()函数　重定位流(数据流/文件)上的文件内部位置指针 注意： 不是定位文件指针，文件指针指向文件/流，文件指针如果不重新赋值将不会改变指向别的文件。 位置指针指向文件内部的字节位置，随着文件的读取会移动。 int fseek(FILE *stream, long offset, int fromwhere); 成功，返回0，失败返回-1，并设置errno的值，可以用perror()函数输出错误。 函数设置文件指针stream的位置。如果执行成功，stream将指向以fromwhere（偏移起始位置：文件头0，当前位置1，文件尾2）为基准，偏移offset（指针偏移量）个字节的位置。如果执行失败(比如offset超过文件自身大小)，则不改变stream指向的位置。 fseek函数和lseek函数类似，但lseek返回的是一个off_t数值，而fseek返回的是一个整型。  fseek函数的文件指针，应该为已经打开的文件。如果没有打开的文件，那么将会出现错误。 fseek函数也可以这样理解，相当于在文件当中定位。这样在读取规律性存储文件时可以利用其OFFSET偏移量读取文件上任意的内容。 fseek函数一般用于二进制文件，也可以用于文本文件。用于文本文件操作时，需特别注意回车换行的情况：因为在一般浏览工具如UltraEdit中，回车换行视为两个字符0x0D和0x0A，但真实的文件读写和定位时确按照一个字符0x0A进行处理，因此碰到此类问题时，可以考虑将文件整个读入内存，然后在内存中手工插入0x0D的方法，这样可以达到较好的处理效果。
+DEMO1: [cpp] view plain copy 
+#include <stdio.h> 
+  #include <process.h>   
+int main(void)   
+{      
+ FILE *stream;    
+   char line[81]; 
+      int result;    
+   /*如果成功返回0，失败则返回相应的错误代码。*/      
+ if (fopen_s(&stream,"fseek.out","w+")!=0)     
+  {          
+ printf("The file fseek.out was not opened\n");   
+        return -1;    
+   }     
+  fprintf(stream,"The fseek begins here:This is the file 'fseek.out'\n");   
+/*move the pointer to the file's beginning*/     
+  result=fseek(stream,23L,SEEK_SET);    
+   if (result)     
+  {           
+perror("Fseek failed");     
+  }        
+else     
+  {           
+printf("File pointer is set to middle of first line.\n");         
+  fgets(line,80,stream);        
+   printf("%s",line);   
+    }     
+  fclose(stream);    
+   system("pause");       
+return 0;  
+ }
+
+
+越来越感觉到c语言的短小精悍。
+有一次要调试一个代码，直接从ftp上下载下来，打开vs就开始调试。无论怎么调试就是不对，单步运行定位错误到一个打开文件的函数。原来是文件没有打开。但是没有具体的错误信息，调试一下子陷入了僵局。记得以前用MFC的时候里面有个函数叫做GetLastError()，可以获取最后出错的原因，如果c语言有就好了。上网搜索了一下果然有这个东西，就叫做errno。errno是定义"error.h"里的错误码，“error.h”定义了一系列的宏来表示相应的错误信息，通过检查errono再在“erro.h”里面查找就能找到相应的出错信息。
+
+ 
+from  wikipedia:
+errno.h 是C语言C标准库里的头文件，定义了通过错误码来回报错误信息的宏：
+errno宏定义为一个int型态的左值, 包含任何函数使用errno功能所产生的上一个错误码。
+一些表示错误码，定义为整数值的宏：
+EDOM 源自于函数的参数超出范围,例如sqrt(-1)
+ERANGE 源自于函数的结果超出范围,例如strtol("0xfffffffff",NULL,0)
+EILSEQ 源自于不合法的字符顺序,例如wcstombs(str, L"\xffff", 2)
+
+但是一个一个手工查找毕竟麻烦，还好标准库为我们提供了一些函数。
+
+ 1 void perror( const char *string );//Print an error message.<stdio.h> or <stdlib.h>
+ 2 //msdn 示例代码
+ 3 /* PERROR.C: This program attempts to open a file named
+ 4  * NOSUCHF.ILE. Because this file probably doesn't exist,
+ 5  * an error message is displayed. The same message is
+ 6  * created using perror, strerror, and _strerror.
+ 7  */
+ 8 
+ 9 #include <fcntl.h>
+10 #include <sys/types.h>
+11 #include <sys/stat.h>
+12 #include <io.h>
+13 #include <stdlib.h>
+14 #include <stdio.h>
+15 #include <string.h>
+16 
+17 void main( void )
+18 {
+19    int  fh;
+20 
+21    if( (fh = _open( "NOSUCHF.ILE", _O_RDONLY )) == -1 )
+22    {
+23       /* Three ways to create error message: */
+24       perror( "perror says open failed" );
+25       printf( "strerror says open failed: %s\n", strerror( errno ) );
+26       printf( _strerror( "_strerror says open failed" ) );
+27    }
+28    else
+29    {
+30       printf( "open succeeded on input file\n" );
+31       _close( fh );
+32    }
+33 }
+34 
+35 
+36 /*Output
+37 
+38 perror says open failed: No such file or directory
+39 
+40 strerror says open failed: No such file or directory
+41 _strerror says open failed: No such file or directory*/
+
+上述例子中也出现了另外一个打印错误信息的函数即——strerror
+
+/*strerror, _strerror
+Get a system error message (strerror) or prints a user-supplied error message (_strerror).include "string.h"
+strerror and _strerror return a pointer to the error-message string. Subsequent calls to strerror or _strerror can overwrite the string.
+
+*/
+char *strerror( int errnum );
+char *_strerror( const char *strErrMsg );
