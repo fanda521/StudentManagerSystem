@@ -262,6 +262,29 @@ int main()
 ```
 
 ## 四，效果展示
+
+ - 1.程序启动效果图
+ 	![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012164129275.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)
+ - 2.删除效果图
+ 	![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012164813431.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012164830259.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)
+ - 3.获取学生人数效果图
+ 	![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012164854740.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)
+ - 4.判断空效果图
+ 	![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012164915102.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)
+ - 5.查找效果图
+ 	![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012164953620.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)
+ - 6.排序效果图
+ 	![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012165007321.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)
+ - 7.修改信息效果图
+ 	![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012165019892.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)
+ - 8.回撤效果图
+ 	![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012165033178.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)![在这里插入图片描述](https://img-blog.csdnimg.cn/2019101216504246.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)
+ 
+ - 9.文件保存内容的效果图
+ 	![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012165137353.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)
+ 
+
+	
 ## 五，技术囊括
 ## 六，问题详解
 ## 七，问题反馈
