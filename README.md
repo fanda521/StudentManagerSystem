@@ -7,16 +7,20 @@
   #### 读者可以自行将我的源码进行分解成多个类，也可以自己重构代码，将代码复用写的更通用，期间会遇到一些困难，但是成功了，对于读者的实力将有很大的提升。
 ## 二，项目运行部署
 ---
-  - 1.如果需要查看源代码请自行下载DEVC++，然后直接将StudentManager.cpp导入即可，也可以直接双击StudentManager.cpp，它会自动在DEVC++中打开，   不过前提是你自己的电脑上已经安装了DEVC++的软件。
-  - 2.如果不需要查看源代码，则可以直接双击StudentManager.exe可执行文件，直接运行。
+ - 1.如果需要查看源代码请自行下载DEVC++，然后直接将StudentManager.cpp导入即可，也可以直接双击StudentManager.cpp，它会自动在DEVC++中打开，   不过前提是你自己的电脑上已经安装了DEVC++的软件。
+ - 2.如果不需要查看源代码，则可以直接双击StudentManager.exe可执行文件，直接运行。
 ---
 ## 三，项目详解
-  ###  - 项目结构 
-    
-  ###  - 项目功能
-  ###  - 项目结构体讲解
-  ###  - 项目文件读取与写入
-  ###  - 项目方法详解
+  
+ - ###  项目结构
+	![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012124143682.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012124230355.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)![在这里插入图片描述](https://img-blog.csdnimg.cn/20191012124254884.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM4MTcwNTI2,size_16,color_FFFFFF,t_70)
+ - ###  项目功能
+
+ - ###  项目结构体讲解
+
+ - ###  项目文件读取与写入
+
+ - ###  项目方法详解
 
 ## 四，效果展示
 ## 五，技术囊括
