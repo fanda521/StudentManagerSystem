@@ -1,10 +1,11 @@
 # StudentManagerSystem（学生管理系统）
+@[toc]
 ## 一，项目简介
-  #### 该项目是一个学生管理系统，主要使用C语言编写，在DEVC++上运行，源码中有两个文件：StudentManager.cpp和StudentManager.exe。
-  #### 前者需要在DEVC++上运行，可以看到源码，运行时需要编译；后者是一个可执行文件，不依赖在DEVC++上运行，直接双击即可，但是看不到源码。
-  #### 如何在DEVC++上编译执行请在浏览器上输入该地址：<https://blog.csdn.net/WeiMengXuan/article/details/78554447>。
-  #### 该系统代码只有一个类，因此代码数量多达2000行，其实里面的代码很多是可以复用的，如果复用了代码量将减少到原来的五分之一左右。
-  #### 读者可以自行将我的源码进行分解成多个类，也可以自己重构代码，将代码复用写的更通用，期间会遇到一些困难，但是成功了，对于读者的实力将有很大的提升。
+   - 该项目是一个学生管理系统，主要使用C语言编写，在DEVC++上运行，源码中有两个文件：StudentManager.cpp和StudentManager.exe。
+   - 前者需要在DEVC++上运行，可以看到源码，运行时需要编译；后者是一个可执行文件，不依赖在DEVC++上运行，直接双击即可，但是看不到源码。
+ -  如何在DEVC++上编译执行请在浏览器上输入该地址：<https://blog.csdn.net/WeiMengXuan/article/details/78554447>。
+   - 该系统代码只有一个类，因此代码数量多达2000行，其实里面的代码很多是可以复用的，如果复用了代码量将减少到原来的五分之一左右。
+  -  读者可以自行将我的源码进行分解成多个类，也可以自己重构代码，将代码复用写的更通用，期间会遇到一些困难，但是成功了，对于读者的实力将有很大的提升。
 ## 二，项目运行部署
 ---
  - 1.如果需要查看源代码请自行下载DEVC++，然后直接将StudentManager.cpp导入即可，也可以直接双击StudentManager.cpp，它会自动在DEVC++中打开，   不过前提是你自己的电脑上已经安装了DEVC++的软件。
@@ -286,6 +287,73 @@ int main()
 
 	
 ## 五，技术囊括
+-----
+	  主要使用的是C语言
+	  开发工具是DEVC++
+	  使用到了C语言中主要的知识点：
+	  1.结构体
+	  2.文件的读取和写入
+	  3.基本的if，for，while,switch case等逻辑
+	  4.使用到了动态的内存扩展：malloc
+	  5.指针
+-----
 ## 六，问题详解
+- 		int   delete_aver1(students *first,int &aver,int &n)//传参数的时候整型和类似整型的其他类型的记得取地址符号，你自己就是因为没有取地址符号就吃亏了，调试了将近两个小时！！！！
+-  		record->NUM[record->length]->NUM[i]=(student*)malloc(sizeof(student));//记得要申请对应的学生空间 
+ 		strcpy(record->NUM[record->length]->NUM[i]->num,first->NUM[i]->num);//字符数组不能直接用“=”赋值，要通过方法strcpy赋值，切记！！！ 
+ -		//加载数据,其他的信息可以重复相同，但是学号不能重复！
+    	//此算法只是初步的判断，如果用户一开始输入想输入的学号没有重复，但是实际上输入的与一开始将要输入的不一样，也可能输入成功！ 
+    	students* jiazaishuju(laststep* record,students *first)
+-		 //记录操作步骤，有数据更新的地方都要使用一下，把数据记录下来，这里使用的是，定义一个相同的结构体，复制当前状态的
+		 //信息。比如加入数据，删除数据，更改数据，重排数据都要记录下来
+ 		/*在加入撤退功能时，大部分的方法要加入laststep*record的参数，同时在调用这些方法的地方，也要加入参数，切记，你自己就犯了这个错误
+ 		改了比较久的时间 
+ 		*/
+- 		//初始化读取文件内容
+		//特别注意格式和对应的下标，同时注意是否要在前面取地址符号 
+-		//上一步
+	  void last(laststep* record,students *first)
+	  {
+	  	   if(record->i==0)
+	  	   {
+	  	   	 record->current_index=record->length-1;
+	  	   	 record->index=record->current_index;
+	  	   	 record->i=1;
+			 }
+			if(record->index<=0)
+			{
+				printf("到达后退的极限！\n");
+				return;
+			}
+			record->index--;
+			//first=record->NUM[record->index];//不能单纯的将指针赋值，因为他值得位置都是first，first的内容变了，复制的内容也会同步变动，所以返回步骤里的内容都是一样的
+			record_to_first(record,first);
+			//要解决这个问题就要将内容复制，你这里就是犯了这个错误所以失败了的，切记！！！ 
+			//printf("%d\n",first);
+			//printf("%d\n",record->NUM[record->index]);
+			save(first);
+			printall(first);
+			
+			//record_method(record,first);//不注释的话，连带后退的过程也记录在内，注释后只记录其他真正的操作过程 
+			
+	   } 		
+		
 ## 七，问题反馈
+	如果对该项目由疑问的或者不能够理解的，再或者导入项目运行不成功的可以通过以下方式联系笔者！
+	1.电话号码：13870873449
+	2.qq：1056015243
+	3.邮箱地址：1056015243@qq.com
+	4.github地址：https://github.com/fanda521
 ## 八，工作进程
+         
+|时间| 完成功能 |
+|--|--|
+|   2018年1月1日 | 开始设计项目功能及初步的架构 |
+| 2018年1月4日| 完成数据结构的设计和增删查改|  
+|2018年1月6日 | 实现排序输出|  
+| 2018年1月8日|实现文件读取保存 | 
+| 2018年1月10日|事项回测与前进功能| 
+
+## 如果觉得不错就点个赞吧，start一下 ！
+
+
